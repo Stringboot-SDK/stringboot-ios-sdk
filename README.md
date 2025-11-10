@@ -17,7 +17,6 @@
 6. [Caching & Offline Behavior](#caching--offline-behavior)
 7. [Best Practices](#best-practices)
 8. [FAQ / Troubleshooting](#faq--troubleshooting)
-9. [Changelog](#changelog)
 
 ---
 
@@ -1063,7 +1062,7 @@ if stats.hitRate < 0.8 {
 
 ## Support
 
-**Documentation:** https://docs.stringboot.com
+**View Detailed Documentation:** https://docs.stringboot.com
 
 **Email:** developer@stringboot.com
 
