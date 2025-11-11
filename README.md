@@ -65,7 +65,7 @@ Or add to `Package.swift`:
 dependencies: [
     .package(
         url: "https://github.com/Stringboot-SDK/stringboot-ios-sdk.git",
-        from: "2.0.0"
+        from: "1.0.4"
     )
 ]
 ```
