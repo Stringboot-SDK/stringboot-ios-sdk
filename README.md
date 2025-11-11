@@ -1,6 +1,6 @@
 # Stringboot iOS SDK - Integration Guide
 
-**Verified for:** v2.0 (String-Sync v2 Protocol)
+**Verified for:** v1.0.4 (String-Sync v2 Protocol)
 **Last verified on:** 2025-11-07
 **Audience:** iOS developers integrating the SDK
 **Source:** Based on verified demo app implementation
@@ -44,7 +44,7 @@ The **Stringboot iOS SDK** provides high-performance internationalization (i18n)
 | **Min macOS** | 11.0+ |
 | **Swift** | 5.9+ |
 | **Xcode** | 15.0+ |
-| **SDK Version** | 2.0 |
+| **SDK Version** | 1.0.4 |
 | **License** | Apache 2.0 |
 
 ---
