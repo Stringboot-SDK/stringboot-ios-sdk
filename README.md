@@ -44,7 +44,7 @@ The **Stringboot iOS SDK** provides high-performance internationalization (i18n)
 | **Min macOS** | 11.0+ |
 | **Swift** | 5.9+ |
 | **Xcode** | 15.0+ |
-| **SDK Version** | 1.0.4 |
+| **SDK Version** | 1.2.0 |
 | **License** | Apache 2.0 |
 
 ---
@@ -65,7 +65,7 @@ Or add to `Package.swift`:
 dependencies: [
     .package(
         url: "https://github.com/Stringboot-SDK/stringboot-ios-sdk.git",
-        from: "1.0.4"
+        from: "1.2.0"
     )
 ]
 ```
