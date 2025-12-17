@@ -16,8 +16,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "StringbootSDK",
-            url: "https://github.com/Stringboot-SDK/stringboot-ios-sdk/releases/download/v1.2.0/StringbootSDK.xcframework.zip",
-            checksum: "575d75ff8281a04914d4adef2914f46ca94cb0be993598d99fe9446e6522a83a"
+            url: "https://github.com/Stringboot-SDK/stringboot-ios-sdk/releases/download/v1.2.1/StringbootSDK.xcframework.zip",
+            checksum: "b044aa10d933c93b97ad9f1c972fec4357ed99b18fa245e610881c1a4a57a4e3"
         )
     ]
 )
