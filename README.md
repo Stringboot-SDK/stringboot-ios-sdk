@@ -25,13 +25,19 @@ In Xcode: **File → Add Package Dependencies…**, enter
 https://github.com/Stringboot-SDK/stringboot-ios-sdk
 ```
 
-and choose **Up to Next Major Version** from `3.0.0`. Xcode embeds the framework automatically.
+and choose **Up to Next Major Version** from `3.0.1`. Xcode embeds the framework automatically.
 
 Or in `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Stringboot-SDK/stringboot-ios-sdk", from: "3.0.0")
+    .package(url: "https://github.com/Stringboot-SDK/stringboot-ios-sdk", from: "3.0.1")
+],
+targets: [
+    .target(
+        name: "MyApp",
+        dependencies: [.product(name: "StringbootSDK", package: "stringboot-ios-sdk")]
+    )
 ]
 ```
 
@@ -68,6 +74,10 @@ struct MyApp: App {
 // async/await
 let title = await StringProvider.shared.get("welcome_message", lang: "en")
 ```
+
+**Language:** the SDK starts in the language the user last chose (`setLocale` / `StringbootLanguageManager`,
+persisted), otherwise the device's preferred language if the App has it, otherwise the App's default
+language. A key missing from the current language falls back to the default language.
 
 See the [documentation](https://docs.stringboot.com/ios-sdk) for UIKit, languages, FAQs, A/B tests,
 certificate pinning and troubleshooting.

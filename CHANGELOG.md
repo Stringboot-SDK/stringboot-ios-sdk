@@ -2,6 +2,29 @@
 
 All notable changes to the Stringboot iOS SDK. Versions follow [Semantic Versioning](https://semver.org).
 
+## 3.0.1 (2026-11)
+
+Patch release: fixes found by the acceptance test of 3.0.0 in a fresh consumer app. No breaking API changes.
+
+### Fixed
+
+- **`@StringbootString` updates by itself.** It now observes the string (a `@StateObject` subscribed to `publisher(for:lang:)`), so the view re-renders when the Catalog arrives or changes and, without `lang`, when the language changes, like `SBText`. Before, a fresh install kept showing `??key??` after the Catalog arrived, and a language switch kept the old language. The `.stringboot(_:lang:)` modifier updates the same way.
+- **Starting language.** `deviceLocale()` no longer depends on the app bundle's localizations (a Device set to Hindi got `en` when the app had no `hi.lproj`). The SDK starts in the language the app selected, else the first of `Locale.preferredLanguages` the App has (exact code, then the language part: `pt-BR` matches `pt-BR`, then `pt`), else the App's `defaultLanguage`. On a first launch it asks `/languages` before `/current` to choose it.
+- **The selected language persists.** `setLocale(_:)` and `StringbootLanguageManager.setLanguage(_:)` now persist the selection like `changeLanguage(to:)` (key `com.stringboot.currentLanguage`), and `initialize` restores it before the first sync, as on Android.
+- **A mistyped Client Token no longer discards the stored Catalogs.** After a change of Client Token or base URL, the previous App's Catalogs stay in use until the new configuration gets its first successful answer (`/languages` or `/current`, `200`/`304`); then they are discarded and never served as the new App's. Offline or after a `401`, the app keeps its strings and the rejection is reported (`isTokenRejected`, `lastSyncError`). The previous App's versions are never sent as `If-None-Match`.
+- **No false "experiments stopped".** On a language switch `onExperimentsAssigned` was called with `[:]` and then, 100-200 ms later, with the real assignments. Assignments for a language are now reported only once its Catalog is applied; `[:]` means the experiments really ended.
+- **One `/languages` request per start.** A cold start made three `/languages` requests (each language switch one more; offline, 3-4 within 200 ms). Callers now share the request in flight and reuse an answer, or an offline failure, younger than 60 s (the edge TTL); a `404` on `/current` still forces one, and a failed request is retried when the network returns. A start with nothing changed costs `/languages` + `/current`.
+- **`lastSyncError` is cleared** by the next successful check (`200` or `304`), not only by a new Catalog. `initializationError` is cleared too, unless the token was rejected.
+- `StringProvider.refreshFromNetwork(lang:forceRefresh:)` is `@discardableResult`, so the documented `await StringProvider.shared.refreshFromNetwork()` compiles without a warning.
+
+### Changed
+
+- `publisher(for:lang:)` emits the stored value synchronously when subscribed (no `??key??` placeholder first), then on the main thread after every Catalog change and, when `lang` is nil, after every language change.
+- `initialize` publishes `currentLanguage` (the starting language) and bumps `lastUpdate`, so views created earlier re-read their strings. `StringbootLanguageManager.currentLanguage` follows `StringProvider.currentLanguage`.
+- New `StringProvider.clearLanguageOverride()`: forget the selected language and follow the Device's preferred languages again.
+- Packaging: the XCFramework zip has no `__MACOSX/` AppleDouble files, ships only the public `.swiftinterface` (no `.private.swiftinterface` or `.package.swiftinterface`), and the framework's `Info.plist` carries the release version (`CFBundleShortVersionString` and `CFBundleVersion` = `3.0.1`; it said `1.0`/`1`). `build-xcframework.sh` refuses a version different from `StringbootSDKInfo.version`. Signing, slices, privacy manifest and library evolution are unchanged.
+- `StringbootSDKInfo.version` is `3.0.1` (also in the `User-Agent`).
+
 ## 3.0.0 (2026-11)
 
 **Breaking: required upgrade.** The Stringboot API now serves Devices through the edge-cached Device API v3 (`/v3/c/...`). The endpoints SDK 1.x/2.x used (`/api/v1/client/**`, `/api/v1/client/strings-v2/**`, FAQ, language, meta and delta-sync endpoints) answer **`426 Upgrade Required`**, so app builds with an older SDK keep showing their cached strings but **receive no more updates** until they ship 3.0.
